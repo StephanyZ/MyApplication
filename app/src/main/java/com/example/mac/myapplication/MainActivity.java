@@ -1,33 +1,59 @@
 package com.example.mac.myapplication;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.content.Intent;
-import android.view.View;
 
-public class MainActivity extends AppCompatActivity {
+import android.app.Activity;
+
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import java.util.HashMap;
+import java.util.Map;
+
+
+public class MainActivity extends Activity{
     String msg = "Android : ";
-    @Override
+    public static String  LOGIN_URL= "http://172.20.10.3:8080/valmanage/jsp/login.jsp";
+    private String result=null;
+    String flag=null;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d(msg, "The onCreate() event");
+        Button bt=(Button)findViewById(R.id.loginbutton);
+        bt.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Thread t = new Thread(newTread);
+                t.start();
+            }
+        });
     }
 
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
+    Runnable newTread = new Runnable() {
+        public void run() {
+            EditText user = (EditText)findViewById(R.id.useraccount);
+            String userac=user.getText().toString().trim();
+            EditText password = (EditText) findViewById(R.id.password);
+            String passwd=password.getText().toString().trim();
+            Map<String,String> usermessage=new HashMap<String,String>();
+            usermessage.put("useraccount",userac);
+            usermessage.put("password",passwd);
+            result=PostUtils.getDataByPost(LOGIN_URL,usermessage,"utf8");
+            handler.sendEmptyMessage(0x123);
+        }
 
-    // Method to start the service
-    public void startService(View view) {
+    };
 
-    }
 
-    // Method to stop the service
-    public void stopService(View view) {
-        stopService(new Intent(getBaseContext(), MyService.class));
-    }
+    private Handler handler = new Handler() {
+        public void handleMessage(android.os.Message msg) {
+            Toast.makeText(MainActivity.this,"yes"+result,Toast.LENGTH_SHORT).show();
+        };
+    };
+
 }

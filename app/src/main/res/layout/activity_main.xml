@@ -8,66 +8,64 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.example.mac.myapplication.MainActivity">
-    <RelativeLayout
+    <GridLayout
         android:id="@+id/login"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         tools:layout_editor_absoluteX="-10dp"
         tools:layout_editor_absoluteY="40dp"
         android:orientation="horizontal"
-        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="33dp">
+        android:columnCount="2"
+        android:rowCount="2">
 
         <EditText
-            android:id="@+id/editText2"
+            android:id="@+id/password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPassword"
-            tools:layout_editor_absoluteX="48dp"
-            tools:layout_editor_absoluteY="207dp"
-            android:layout_weight="1"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"
+            android:layout_column="1"
+            android:layout_row="1"
             tools:ignore="LabelFor" />
 
         <EditText
-            android:id="@+id/editText3"
+            android:id="@+id/useraccount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:layout_column="1"
+            android:layout_row="0"
             android:inputType="textPersonName"
             tools:layout_editor_absoluteX="192dp"
-            tools:layout_editor_absoluteY="207dp"
-            android:layout_above="@+id/editText2"
-            android:layout_alignParentEnd="true" />
+            tools:layout_editor_absoluteY="207dp" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/account"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_row="0"
             android:text="Account"
             android:textSize="40px"
-            android:layout_alignBaseline="@+id/editText3"
-            android:layout_alignBottom="@+id/editText3"
-            android:layout_toStartOf="@+id/editText3"
-            android:layout_marginEnd="20dp" />
+            />
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/passwd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="23dp"
+            android:layout_column="0"
+            android:layout_row="1"
             android:text="Password"
             android:textSize="40px"
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true" />
 
 
-    </RelativeLayout>
+    </GridLayout>
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/valvefast"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="VALVE FAST"
@@ -82,21 +80,21 @@
         android:layout_below="@+id/login"
         android:layout_centerInParent="true">
         <Button
-            android:id="@+id/button"
+            android:id="@+id/resetbutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Reset"
             />
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/loginbutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Login"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="80dp"
-            android:layout_toEndOf="@+id/button" />
+            android:layout_toEndOf="@+id/resetbutton"
+            />
 
     </RelativeLayout>
-
 
 </RelativeLayout>

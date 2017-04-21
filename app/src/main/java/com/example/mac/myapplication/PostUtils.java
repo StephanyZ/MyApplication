@@ -1,63 +1,141 @@
 package com.example.mac.myapplication;
 
+
+import android.util.Log;
+
+import android.view.View;
+
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Map;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by mac on 17/4/20.
  */
 
 public class PostUtils {
-        public static String LOGIN_URL = "http://172.16.2.54:8080/HttpTest/ServletForPost";
-        public static String LoginByPost(String number,String passwd)
-        {
-            String msg = "";
-            try{
-                HttpURLConnection conn = (HttpURLConnection) new URL(LOGIN_URL).openConnection();
-                //设置请求方式,请求超时信息
-                conn.setRequestMethod("POST");
-                conn.setReadTimeout(5000);
-                conn.setConnectTimeout(5000);
-                //设置运行输入,输出:
-                conn.setDoOutput(true);
-                conn.setDoInput(true);
-                //Post方式不能缓存,需手动设置为false
-                conn.setUseCaches(false);
-                //我们请求的数据:
-                String data = "passwd="+ URLEncoder.encode(passwd, "UTF-8")+
-                        "&number="+ URLEncoder.encode(number, "UTF-8");
-                //这里可以写一些请求头的东东...
-                //获取输出流
-                OutputStream out = conn.getOutputStream();
-                out.write(data.getBytes());
-                out.flush();
-                if (conn.getResponseCode() == 200) {
-                    // 获取响应的输入流对象
-                    InputStream is = conn.getInputStream();
-                    // 创建字节输出流对象
-                    ByteArrayOutputStream message = new ByteArrayOutputStream();
-                    // 定义读取的长度
-                    int len = 0;
-                    // 定义缓冲区
-                    byte buffer[] = new byte[1024];
-                    // 按照缓冲区的大小，循环读取
-                    while ((len = is.read(buffer)) != -1) {
-                        // 根据读取的长度写入到os对象中
-                        message.write(buffer, 0, len);
-                    }
-                    // 释放资源
-                    is.close();
-                    message.close();
-                    // 返回字符串
-                    msg = new String(message.toByteArray());
-                    return msg;
-                }
-            }catch(Exception e){e.printStackTrace();}
-            return msg;
+
+    public static String getDataByGet(String url,Map<String,String>params,String charset) {
+        if (url == null) {
+            return null;
         }
+        url = url.trim();
+        URL targetUrl = null;
+        try {
+            if (params == null) {
+                targetUrl = new URL(url);
+            } else {
+                StringBuilder sb = new StringBuilder(url + "?");
+                for (Map.Entry<String, String> me : params.entrySet()) {
+//                    解决请求参数中含有中文导致乱码问题
+                    sb.append(me.getKey()).append("=").append(URLEncoder.encode(me.getValue(), charset)).append("&")
+                    ;
+                }
+                sb.deleteCharAt(sb.length() - 1);
+                targetUrl = new URL(sb.toString());
+            }
+            Log.i(TAG, "get:url----->" + targetUrl.toString());//打印log
+            HttpURLConnection conn = (HttpURLConnection) targetUrl.openConnection();
+            conn.setConnectTimeout(3000);
+            conn.setRequestMethod("GET");
+            conn.setDoInput(true);
+            int responseCode = conn.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                String ss=stream2String(conn.getInputStream(), charset);
+                return ss;
+            }
+        } catch (Exception e) {
+            Log.i(TAG, e.getMessage());
+        }
+        return null;
     }
+/**
+ *  以post方式向服务端发送请求，并将服务端的响应结果以字符串方式返回。如果没有响应内容则返回空字符串
+ * @param url 请求的url地址
+ * @param params 请求参数
+ * @param charset url编码采用的码表
+ * @return
+ */
+    public static String getDataByPost(String url,Map<String,String>params,String charset)
+    {
+        if(url == null)
+        {
+            return null;
+        }
+        url = url.trim();
+        URL targetUrl = null;
+        OutputStream out = null;
+        try
+        {
+            targetUrl = new URL(url);
+            HttpURLConnection conn = (HttpURLConnection) targetUrl.openConnection();
+            conn.setConnectTimeout(3000);
+            conn.setRequestMethod("POST");
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+
+            StringBuilder sb = new StringBuilder();
+            if(params!=null && !params.isEmpty())
+            {
+                for(Map.Entry<String,String> me : params.entrySet())
+                {
+//                    对请求数据中的中文进行编码
+                    sb.append(me.getKey()).append("=").append(URLEncoder.encode(me.getValue(),charset)).append("&");
+                }
+                sb.deleteCharAt(sb.length()-1);
+            }
+            byte[] data = sb.toString().getBytes();
+            conn.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
+            conn.setRequestProperty("Content-Length",String.valueOf(data.length));
+            out = conn.getOutputStream();
+            out.write(data);
+
+            Log.i(TAG,"post:url----->"+targetUrl.toString());//打印log
+
+            int responseCode = conn.getResponseCode();
+            if(responseCode == HttpURLConnection.HTTP_OK)
+            {
+                String ss=stream2String(conn.getInputStream(),charset);
+                Log.i("response",ss);
+                return ss;
+            }
+        } catch (Exception e)
+        {
+            Log.i(TAG,e.getMessage());
+        }
+        return null;
+    }
+    /**
+     * 将输入流对象中的数据输出到字符串中返回
+     * @param in
+     * @return
+     * @throws
+     */
+    private static String stream2String(InputStream in,String charset) throws IOException
+    {
+        if(in == null)
+            return null;
+        byte[] buffer = new byte[1024];
+        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+        int len = 0;
+        while((len = in.read(buffer)) !=-1)
+        {
+            bout.write(buffer, 0, len);
+        }
+        String result = new String(bout.toByteArray(),charset);
+        in.close();
+        return result;
+    }
+}
 
