@@ -18,7 +18,8 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".Homepage">
+        <activity
+            android:name=".Homepage">
         </activity>
     </application>
 

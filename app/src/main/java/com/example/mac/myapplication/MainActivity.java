@@ -3,6 +3,7 @@ package com.example.mac.myapplication;
 
 import android.app.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -18,6 +19,7 @@ import java.util.Map;
 public class MainActivity extends Activity{
     String msg = "Android : ";
     public static String  LOGIN_URL= "http://172.20.10.3:8080/valmanage/jsp/login.jsp";
+    private String response=null;
     private String result=null;
     String flag=null;
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +45,16 @@ public class MainActivity extends Activity{
             Map<String,String> usermessage=new HashMap<String,String>();
             usermessage.put("useraccount",userac);
             usermessage.put("password",passwd);
-            result=PostUtils.getDataByPost(LOGIN_URL,usermessage,"utf8");
-            handler.sendEmptyMessage(0x123);
+            response=PostUtils.getDataByPost(LOGIN_URL,usermessage,"utf8");
+
+            if(response.equals("sucess")){
+                result="登陆成功";
+                handler.sendEmptyMessage(0x123);
+                startActivity(new Intent().setClass(MainActivity.this,Homepage.class));
+                MainActivity.this.finish();
+            }else if(response.equals("failed")){
+                result="密码或账号错误";
+            }
         }
 
     };
@@ -52,7 +62,7 @@ public class MainActivity extends Activity{
 
     private Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
-            Toast.makeText(MainActivity.this,"yes"+result,Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this,result,Toast.LENGTH_SHORT).show();
         };
     };
 
