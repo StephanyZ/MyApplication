@@ -27,7 +27,6 @@ public class MainActivity extends Activity{
         setContentView(R.layout.activity_main);
         Button bt=(Button)findViewById(R.id.loginbutton);
         bt.setOnClickListener(new OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 Thread t = new Thread(newTread);
@@ -42,9 +41,11 @@ public class MainActivity extends Activity{
             String userac=user.getText().toString().trim();
             EditText password = (EditText) findViewById(R.id.password);
             String passwd=password.getText().toString().trim();
+
             Map<String,String> usermessage=new HashMap<String,String>();
             usermessage.put("useraccount",userac);
             usermessage.put("password",passwd);
+
             response=PostUtils.getDataByPost(LOGIN_URL,usermessage,"utf8");
 
             if(response.equals("sucess")){
@@ -54,6 +55,7 @@ public class MainActivity extends Activity{
                 MainActivity.this.finish();
             }else if(response.equals("failed")){
                 result="密码或账号错误";
+                handler.sendEmptyMessage(0x123);
             }
         }
 

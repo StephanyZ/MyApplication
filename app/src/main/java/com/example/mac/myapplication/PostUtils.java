@@ -53,6 +53,7 @@ public class PostUtils {
             int responseCode = conn.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 String ss=stream2String(conn.getInputStream(), charset);
+               // Log.d("response.get",ss);
                 return ss;
             }
         } catch (Exception e) {
@@ -107,7 +108,7 @@ public class PostUtils {
             if(responseCode == HttpURLConnection.HTTP_OK)
             {
                 String ss=stream2String(conn.getInputStream(),charset);
-                Log.i("response",ss);
+                //Log.i("response",ss);
                 return ss;
             }
         } catch (Exception e)

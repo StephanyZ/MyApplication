@@ -3,6 +3,7 @@
     package="com.example.mac.myapplication">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,11 +17,9 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-        <activity
-            android:name=".Homepage">
-        </activity>
+        <activity android:name=".Homepage"></activity>
+        <activity android:name=".LookInfo"></activity>
     </application>
 
 </manifest>
