@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--上面的为背景的底层-->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#eded9ae8" />
+        </shape>
+    </item>
+
+    <!--背景上面的图层 让底部的背景露出来4dp的高度-->
+    <item android:bottom="4dp">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+            <gradient
+                android:angle="0"
+                android:centerX="0"
+                android:centerY="0"
+                android:startColor="#9430eff9"
+                android:endColor="#6f6ffa"
+                android:type="linear"
+                />
+        </shape>
+    </item>
+</layer-list>
