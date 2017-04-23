@@ -4,4 +4,9 @@
     <string name="menu_settings">Settings</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_homepage">首页</string>
+
+    <string-array name="photoitem">
+        <item>安全阀编号</item>
+        <item>存储位置编号</item>
+    </string-array>
 </resources>

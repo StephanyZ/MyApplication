@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.mac.myapplication.AddInfo"
+    android:orientation="vertical">
+   <TextView
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:background="@drawable/headline"
+       android:layout_weight="1"
+       android:text="首页"
+       android:gravity="center"
+       android:textSize="20dp"
+       >
+   </TextView>
+   <Spinner
+       android:id="@+id/photo"
+       android:layout_weight="1"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:entries="@array/photoitem"
+       android:layout_marginTop="@dimen/height_4_80"
+       >
+   </Spinner>
+   <Button
+       android:id="@+id/spinnerbtn"
+       android:layout_weight="0"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:text="开始扫描"
+       android:layout_margin="@dimen/height_4_80"/>
+
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_weight="15">
+
+   </LinearLayout>
+
+</LinearLayout>

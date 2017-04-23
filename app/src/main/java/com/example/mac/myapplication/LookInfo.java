@@ -1,9 +1,13 @@
 package com.example.mac.myapplication;
 
 import android.app.Activity;
+import android.content.res.ColorStateList;
+import android.content.res.Resources;
+import android.content.res.XmlResourceParser;
 import android.os.Handler;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -30,44 +34,69 @@ public class LookInfo extends Activity {
         setContentView(R.layout.activity_look_info);
         Thread t = new Thread(newTread);
         t.start();
-        Button bt=(Button)findViewById(R.id.gettable);
-        bt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                    tableLayout = (TableLayout) findViewById(R.id.tableshow);
-                    tableLayout.removeAllViews();
-                    tableLayout.setStretchAllColumns(true);
-                    try {
-                        JSONArray data = new JSONArray(response);
-                        int colume = 5;
-                        int row = data.length();
-                        String colume_s[]={"valnumber","storagelocationnum","opaction","optime","valstatus"};
-
-                        for (int i = 0; i < data.length(); i++) {
-                            TableRow tableRow = new TableRow(LookInfo.this);
-
-                            JSONObject mydata = data.getJSONObject(i);
-                            for (int j = 0; j < colume; j++) {
-                                TextView tv = new TextView(LookInfo.this);
-                                ViewGroup parent = (ViewGroup)tv.getParent();
-                                if (parent != null) {
-                                    parent.removeAllViews();
-                                }
-                                tv = new TextView(LookInfo.this);
-                                tv.setText(mydata.getString(colume_s[j]));
-                                tableRow.addView(tv);
-                            }
-                            ViewGroup parent = (ViewGroup)tableRow.getParent();
+        while(true){
+            if(Flag==1) {
+                tableLayout = (TableLayout) findViewById(R.id.tableshow);
+                tableLayout.removeAllViews();
+                tableLayout.setStretchAllColumns(true);
+                try {
+                    JSONArray data = new JSONArray(response);
+                    int colume = 5;
+                    int row = data.length();
+                    String colume_s[] = {"valnumber", "storagelocationnum", "opaction", "optime", "valstatus"};
+                    String colume_head[]={"编号","位置","动作","时间","状态"};
+                    {
+                        TableRow tableRow = new TableRow(LookInfo.this);
+                        TableRow.LayoutParams lp1=new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,TableRow.LayoutParams.WRAP_CONTENT);
+                        for (int k = 0; k < 5; k++) {
+                            TextView tv = new TextView(LookInfo.this);
+                            ViewGroup parent = (ViewGroup) tv.getParent();
                             if (parent != null) {
                                 parent.removeAllViews();
                             }
-                            tableLayout.addView(tableRow, new TableLayout.LayoutParams(MP, WC, 1));
+                            tv = new TextView(LookInfo.this);
+                            tv.setText(colume_head[k]);
+                            tv.setBackgroundResource(R.drawable.table_textview);
+                            tv.setGravity(Gravity.CENTER);
+                            lp1.setMargins(5,5,5,5);
+                            tv.setLayoutParams(lp1);
+                            tableRow.addView(tv);
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                        tableLayout.addView(tableRow, new TableLayout.LayoutParams(MP, WC, 1));
                     }
+                    for (int i = 0; i < data.length()+1; i++) {
+                        TableRow tableRow = new TableRow(LookInfo.this);
+                        JSONObject mydata = data.getJSONObject(i);
+                        TableRow.LayoutParams lp1=new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,TableRow.LayoutParams.WRAP_CONTENT);
+                        for (int j = 0; j < colume; j++) {
+                            TextView tv = new TextView(LookInfo.this);
+                            ViewGroup parent = (ViewGroup) tv.getParent();
+                            if (parent != null) {
+                                parent.removeAllViews();
+                            }
+
+
+                            tv = new TextView(LookInfo.this);
+                            tv.setText(mydata.getString(colume_s[j]));
+                            tv.setBackgroundResource(R.drawable.table_textview);
+                            tv.setGravity(Gravity.CENTER);
+                            lp1.setMargins(5,5,5,5);
+                            tv.setLayoutParams(lp1);
+                            tableRow.addView(tv);
+                        }
+                        ViewGroup parent = (ViewGroup) tableRow.getParent();
+                        if (parent != null) {
+                            parent.removeAllViews();
+                        }
+                        tableLayout.addView(tableRow, new TableLayout.LayoutParams(MP, WC, 1));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-        });
+                break;
+            }
+        }
+
     }
 
     Runnable newTread = new Runnable(){

@@ -18,8 +18,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Homepage"></activity>
-        <activity android:name=".LookInfo"></activity>
+        <activity android:name=".Homepage" />
+        <activity android:name=".LookInfo" />
+        <activity android:name=".AddInfo"></activity>
     </application>
 
 </manifest>

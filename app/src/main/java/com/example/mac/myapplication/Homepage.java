@@ -40,10 +40,9 @@ public class Homepage extends Activity implements View.OnClickListener{
     public void onClick(View v) {
         if(v.getId()==R.id.lookbutton){
             startActivity(new Intent().setClass(Homepage.this,LookInfo.class));
-
         }
         if(v.getId()==R.id.addbutton){
-
+            startActivity(new Intent().setClass(Homepage.this,AddInfo.class));
         }
         if(v.getId()==R.id.outbutton){
 
