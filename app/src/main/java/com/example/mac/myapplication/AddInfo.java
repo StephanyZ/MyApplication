@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -18,14 +20,21 @@ import android.widget.Toast;
 
 import com.acker.simplezxing.activity.CaptureActivity;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class AddInfo extends Activity {
+    String ADDTOPRE_URL="http://172.20.10.3:8080/valmanage/jsp/androidpreparetosave.jsp";
     Spinner photo;
     int index;
+    int sleep=0;
     String[] photos;
     private static final int REQ_CODE_PERMISSION = 0x1111;
     private TextView tvResult;
     String Account=null;
+    private String response=null;
+    private String result=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,11 +44,10 @@ public class AddInfo extends Activity {
         String account = bundle.getString("account");
         Account=account;
         Button bt=(Button)findViewById(R.id.spinnerbtn);
+        Button bt1=(Button)findViewById(R.id.startsavebtn);
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 if (ContextCompat.checkSelfPermission(AddInfo.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                     // Do not have the permission of camera, request it.
                     ActivityCompat.requestPermissions(AddInfo.this, new String[]{Manifest.permission.CAMERA}, REQ_CODE_PERMISSION);
@@ -50,7 +58,50 @@ public class AddInfo extends Activity {
 
             }
         });
+        bt1.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                Thread t = new Thread(newTread);
+                t.start();
+
+            }
+
+        });
     }
+    Runnable newTread = new Runnable() {
+        public void run() {
+            TextView addvalnumber=(TextView)findViewById(R.id.addvalnumber);
+            TextView addstoragenumber=(TextView)findViewById(R.id.addstoragevalnumber);
+            String valnumber=addvalnumber.getText().toString().trim();
+            String storagenumber=addstoragenumber.getText().toString().trim();
+            String opaction="S";
+            Map<String,String> addmessage=new HashMap<String,String>();
+            addmessage.put("valorgroupnumber",valnumber);
+            addmessage.put("storagelocationnum",storagenumber);
+            addmessage.put("opaction",opaction);
+            addmessage.put("manindex",Account);
+            response=PostUtils.getDataByPost(ADDTOPRE_URL,addmessage,"utf8");
+            if(response.equals("sucess")) {
+                result="添加成功";
+
+            }else{
+                String[] re = response.split("&");
+                Log.d("re0",re[0]);
+                Log.d("re1",re[1]);
+                if(re[0].equals("failed")){
+                    result="添加失败！"+re[1];
+                }
+            }
+            handler.sendEmptyMessage(0x123);
+
+        }
+    };
+    private Handler handler = new Handler() {
+        public void handleMessage(android.os.Message msg) {
+            Toast.makeText(AddInfo.this,result,Toast.LENGTH_SHORT).show();
+            sleep=1;
+            Looper.loop();
+        };
+    };
     private void startCaptureActivityForResult() {
         Intent intent = new Intent(this, CaptureActivity.class);
         Bundle bundle = new Bundle();
