@@ -51,7 +51,11 @@ public class MainActivity extends Activity{
             if(response.equals("sucess")){
                 result="登陆成功";
                 handler.sendEmptyMessage(0x123);
-                startActivity(new Intent().setClass(MainActivity.this,Homepage.class));
+                Intent it=new Intent().setClass(MainActivity.this,Homepage.class);
+                Bundle bundle=new Bundle();
+                bundle.putString("account", userac);
+                it.putExtras(bundle);
+                startActivity(it);
                 MainActivity.this.finish();
             }else if(response.equals("failed")){
                 result="密码或账号错误";

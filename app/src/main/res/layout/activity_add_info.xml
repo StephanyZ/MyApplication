@@ -36,8 +36,50 @@
    <LinearLayout
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
-       android:layout_weight="15">
-
+       android:layout_weight="15"
+       android:orientation="vertical"
+       android:layout_margin="@dimen/height_4_80">
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+         <TextView
+             android:id="@+id/valnumber"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:textSize="@dimen/height_15_80"
+             android:layout_weight="1"/>
+         <TextView
+             android:id="@+id/addvalnumber"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:textSize="@dimen/height_15_80"
+             android:layout_weight="1"/>
+      </LinearLayout>
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_margin="@dimen/height_4_80"
+          >
+         <TextView
+             android:id="@+id/storagenumber"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:textSize="@dimen/height_15_80"
+             android:layout_weight="1"/>
+         <TextView
+             android:id="@+id/addstoragevalnumber"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:textSize="@dimen/height_15_80"
+             android:layout_weight="1"/>
+      </LinearLayout>
    </LinearLayout>
-
+   <Button
+       android:id="@+id/startsavebtn"
+       android:layout_weight="0"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:text="开始预存"
+       android:layout_margin="@dimen/height_4_80"/>
 </LinearLayout>
+

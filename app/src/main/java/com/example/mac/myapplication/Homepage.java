@@ -20,6 +20,7 @@ import static java.security.AccessController.getContext;
 
 public class Homepage extends Activity implements View.OnClickListener{
     Button lookbtn,addbtn,outbtn,searchbtn;
+    String Account=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +34,9 @@ public class Homepage extends Activity implements View.OnClickListener{
         addbtn.setOnClickListener(this);
         outbtn.setOnClickListener(this);
         searchbtn.setOnClickListener(this);
+        Bundle bundle = this.getIntent().getExtras();
+        String account = bundle.getString("account");
+        Account=account;
     }
 
 
@@ -42,7 +46,11 @@ public class Homepage extends Activity implements View.OnClickListener{
             startActivity(new Intent().setClass(Homepage.this,LookInfo.class));
         }
         if(v.getId()==R.id.addbutton){
-            startActivity(new Intent().setClass(Homepage.this,AddInfo.class));
+            Intent it=new Intent().setClass(Homepage.this,AddInfo.class);
+            Bundle bundle=new Bundle();
+            bundle.putString("account", Account);
+            it.putExtras(bundle);
+            startActivity(it);
         }
         if(v.getId()==R.id.outbutton){
 
