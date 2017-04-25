@@ -20,14 +20,21 @@ import android.widget.Toast;
 
 import com.acker.simplezxing.activity.CaptureActivity;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
 
 public class AddInfo extends Activity {
     String ADDTOPRE_URL="http://172.20.10.3:8080/valmanage/jsp/androidpreparetosave.jsp";
+    String GETVALINFO_URL="http://172.20.10.3:8080/valmanage/jsp/show.jsp";
     Spinner photo;
+    String VALINFO="";
     int index;
+    int Flag=0;
     int sleep=0;
     String[] photos;
     private static final int REQ_CODE_PERMISSION = 0x1111;
@@ -54,6 +61,7 @@ public class AddInfo extends Activity {
                 } else {
                     // Have gotten the permission
                     startCaptureActivityForResult();
+
                 }
 
             }
@@ -66,6 +74,7 @@ public class AddInfo extends Activity {
             }
 
         });
+
     }
     Runnable newTread = new Runnable() {
         public void run() {
@@ -79,10 +88,10 @@ public class AddInfo extends Activity {
             addmessage.put("storagelocationnum",storagenumber);
             addmessage.put("opaction",opaction);
             addmessage.put("manindex",Account);
+            addmessage.put("option","nochecksave");
             response=PostUtils.getDataByPost(ADDTOPRE_URL,addmessage,"utf8");
             if(response.equals("sucess")) {
                 result="添加成功";
-
             }else{
                 String[] re = response.split("&");
                 Log.d("re0",re[0]);
@@ -94,6 +103,59 @@ public class AddInfo extends Activity {
             handler.sendEmptyMessage(0x123);
 
         }
+    };
+    Runnable newTread1 = new Runnable() {
+        public void run() {
+            TextView addvalnumber=(TextView)findViewById(R.id.addvalnumber);
+            String valnumber=addvalnumber.getText().toString().trim();
+            Map<String,String> addmessage=new HashMap<String,String>();
+            addmessage.put("valorgroupnumber",valnumber);
+            addmessage.put("option","androidshowvalinfo");
+            response=PostUtils.getDataByPost(GETVALINFO_URL,addmessage,"utf8");
+            if(response!=null) {
+                VALINFO=response;
+                //Log.d("result",response);
+                handler1.sendEmptyMessage(0x123);
+                Flag=1;
+            }else{
+                result="网络故障";
+                handler.sendEmptyMessage(0x123);
+            }
+
+        }
+    };
+    private Handler handler1=new Handler(){
+        public void handleMessage(android.os.Message msg) {
+            try {
+                JSONObject data1 = new JSONObject(response);
+                if (data1.getString("status").equals("Cantbesaved")) {
+                    Toast.makeText(AddInfo.this, "安全阀编码可能存在错误，请核实", Toast.LENGTH_SHORT).show();
+                } else {
+                    String str = "";
+                    if(data1.getString("valorgroup").equals("val")){
+                        JSONArray valarray=new JSONArray(data1.getString("values"));
+                        JSONObject val = valarray.getJSONObject(0);
+                        str+="安全阀编号："+val.getString("valnumber")+"  出厂编号："+val.getString("valproductno")+"  使用单位："+val.getString("manufacture")+"型号："+val.getString("valvecate");
+                    }else if(data1.getString("valorgroup").equals("group")){
+                        JSONArray valarray=new JSONArray(data1.getString("values"));
+                        for (int i = 0; i < valarray.length(); i++) {
+                            JSONObject val = valarray.getJSONObject(i);
+                            str+="安全阀编号："+val.getString("valnumber")+"  出厂编号："+val.getString("valproductno")+"  使用单位："+val.getString("manufacture")+"型号："+val.getString("valvecate");
+
+                        }
+
+                    }
+                    TextView valinfo=(TextView)findViewById(R.id.valinfo);
+                    valinfo.setText(str);
+                    Log.d("result", str);
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Log.d("VALINFO",VALINFO);
+            Looper.loop();
+        };
     };
     private Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -148,6 +210,8 @@ public class AddInfo extends Activity {
                             TextView tv1 = (TextView) findViewById(R.id.addvalnumber);
                             tv1.setText(number); //or do sth
                             tv1.setGravity(Gravity.CENTER);
+                            Thread t = new Thread(newTread1);
+                            t.start();
                         }else if(photos[index].equals("存储位置编号")&&number.length()<6){
                             TextView tv = (TextView) findViewById(R.id.storagenumber);
                             tv.setText("存储位置编号:");

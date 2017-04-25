@@ -74,8 +74,6 @@ public class LookInfo extends Activity {
                             if (parent != null) {
                                 parent.removeAllViews();
                             }
-
-
                             tv = new TextView(LookInfo.this);
                             tv.setText(mydata.getString(colume_s[j]));
                             tv.setBackgroundResource(R.drawable.table_textview);
