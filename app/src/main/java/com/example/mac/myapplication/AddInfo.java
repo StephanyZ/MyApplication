@@ -13,8 +13,13 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Spinner;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,17 +36,22 @@ import java.util.Map;
 public class AddInfo extends Activity {
     String ADDTOPRE_URL="http://172.20.10.3:8080/valmanage/jsp/androidpreparetosave.jsp";
     String GETVALINFO_URL="http://172.20.10.3:8080/valmanage/jsp/show.jsp";
+    private final int WC = ViewGroup.LayoutParams.WRAP_CONTENT;
+    private final int MP = ViewGroup.LayoutParams.MATCH_PARENT;
     Spinner photo;
     String VALINFO="";
     int index;
     int Flag=0;
     int sleep=0;
     String[] photos;
+    private TableLayout tableLayout;
     private static final int REQ_CODE_PERMISSION = 0x1111;
     private TextView tvResult;
     String Account=null;
     private String response=null;
     private String result=null;
+    JSONArray selectcheck=new JSONArray();
+    CheckBox checkBox[]=new CheckBox[50];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +78,8 @@ public class AddInfo extends Activity {
         });
         bt1.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
+                Log.d("ButtonJson",selectcheck.toString());
+                Log.d("length",selectcheck.length()+"");
                 Thread t = new Thread(newTread);
                 t.start();
 
@@ -75,20 +87,29 @@ public class AddInfo extends Activity {
 
         });
 
+
     }
     Runnable newTread = new Runnable() {
         public void run() {
             TextView addvalnumber=(TextView)findViewById(R.id.addvalnumber);
             TextView addstoragenumber=(TextView)findViewById(R.id.addstoragevalnumber);
+            TextView addexlocarionnum=(TextView)findViewById(R.id.addexlocationnum);
             String valnumber=addvalnumber.getText().toString().trim();
             String storagenumber=addstoragenumber.getText().toString().trim();
+            String exlocationnum=addexlocarionnum.getText().toString().trim();
             String opaction="S";
             Map<String,String> addmessage=new HashMap<String,String>();
             addmessage.put("valorgroupnumber",valnumber);
             addmessage.put("storagelocationnum",storagenumber);
             addmessage.put("opaction",opaction);
             addmessage.put("manindex",Account);
-            addmessage.put("option","nochecksave");
+            if(selectcheck.length()==0) {
+                addmessage.put("option", "nochecksave");
+            }else if(selectcheck.length()>0){
+                addmessage.put("option", "ischeckedsave");
+                addmessage.put("checkedinfo",selectcheck.toString());
+                addmessage.put("exlocationnum",exlocationnum);
+            }
             response=PostUtils.getDataByPost(ADDTOPRE_URL,addmessage,"utf8");
             if(response.equals("sucess")) {
                 result="添加成功";
@@ -101,7 +122,6 @@ public class AddInfo extends Activity {
                 }
             }
             handler.sendEmptyMessage(0x123);
-
         }
     };
     Runnable newTread1 = new Runnable() {
@@ -132,23 +152,175 @@ public class AddInfo extends Activity {
                     Toast.makeText(AddInfo.this, "安全阀编码可能存在错误，请核实", Toast.LENGTH_SHORT).show();
                 } else {
                     String str = "";
-                    if(data1.getString("valorgroup").equals("val")){
-                        JSONArray valarray=new JSONArray(data1.getString("values"));
+                    tableLayout = (TableLayout) findViewById(R.id.valinfoshow);
+                    tableLayout.removeAllViews();
+                    tableLayout.setStretchAllColumns(true);
+                    String colume_head[] = {"序号", "编号", "出厂编号", "使用单位", "型号"};
+                    String colume_s[] = {"index","valnumber", "valproductno", "manufacture", "valvecate"};
+                    {
+                        TableRow tableRow = new TableRow(AddInfo.this);
+                        TableRow.LayoutParams lp1 = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+                        for (int k = 0; k < colume_head.length; k++) {
+                            TextView tv = new TextView(AddInfo.this);
+                            ViewGroup parent = (ViewGroup) tv.getParent();
+                            if (parent != null) {
+                                parent.removeAllViews();
+                            }
+                            tv = new TextView(AddInfo.this);
+                            tv.setText(colume_head[k]);
+                            tv.setBackgroundResource(R.drawable.table_textview);
+                            tv.setGravity(Gravity.CENTER);
+                            lp1.setMargins(5, 5, 5, 5);
+                            tv.setLayoutParams(lp1);
+                            tableRow.addView(tv);
+                        }
+                        tableLayout.addView(tableRow, new TableLayout.LayoutParams(MP, WC, 1));
+                    }
+
+                    JSONArray valarray = new JSONArray(data1.getString("values"));
+                    if (data1.getString("valorgroup").equals("val")) {
+                        selectcheck=new JSONArray();
+                        TableRow tableRow = new TableRow(AddInfo.this);
                         JSONObject val = valarray.getJSONObject(0);
-                        str+="安全阀编号："+val.getString("valnumber")+"  出厂编号："+val.getString("valproductno")+"  使用单位："+val.getString("manufacture")+"型号："+val.getString("valvecate");
-                    }else if(data1.getString("valorgroup").equals("group")){
-                        JSONArray valarray=new JSONArray(data1.getString("values"));
-                        for (int i = 0; i < valarray.length(); i++) {
-                            JSONObject val = valarray.getJSONObject(i);
-                            str+="安全阀编号："+val.getString("valnumber")+"  出厂编号："+val.getString("valproductno")+"  使用单位："+val.getString("manufacture")+"型号："+val.getString("valvecate");
+                        TableRow.LayoutParams lp1 = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+                        {
+                            TextView tv = new TextView(AddInfo.this);
+                            ViewGroup parent = (ViewGroup) tv.getParent();
+                            if (parent != null) {
+                                parent.removeAllViews();
+                            }
+                            if(data1.getString("status").equals("checkedwillbesaved")){
+                                CheckBox checkBoxval = new CheckBox(AddInfo.this);
+                                checkBoxval.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                    public void onCheckedChanged(CompoundButton arg0, boolean ischecked) {
+                                        if(ischecked){
+                                            try {
+                                                selectcheck.getJSONObject(0).put("ischecked",true);
+                                                Log.d("Json",selectcheck.toString());
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }else{
+                                            try {
+                                                selectcheck.getJSONObject(0).put("ischecked",false);
+                                                Log.d("Json",selectcheck.toString());
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    }
+                                });
+                                checkBoxval.setGravity(Gravity.CENTER);
+                                lp1.setMargins(5, 5, 5, 5);
+                                checkBoxval.setLayoutParams(lp1);
+                                tableRow.addView(checkBoxval);
+                            }else if(data1.getString("status").equals("willbesaved")) {
+                                tv = new TextView(AddInfo.this);
+                                tv.setText(1 + "");
+                                tv.setBackgroundResource(R.drawable.table_textview);
+                                tv.setGravity(Gravity.CENTER);
+                                lp1.setMargins(5, 5, 5, 5);
+                                tv.setLayoutParams(lp1);
+                                tableRow.addView(tv);
+                            }
 
                         }
+                        for (int j = 1; j < colume_head.length; j++) {
+                            TextView tv = new TextView(AddInfo.this);
+                            ViewGroup parent = (ViewGroup) tv.getParent();
+                            if (parent != null) {
+                                parent.removeAllViews();
+                            }
+                            tv = new TextView(AddInfo.this);
+                            tv.setText(val.getString(colume_s[j]));
+                            tv.setBackgroundResource(R.drawable.table_textview);
+                            tv.setGravity(Gravity.CENTER);
+                            lp1.setMargins(5, 5, 5, 5);
+                            tv.setLayoutParams(lp1);
+                            tableRow.addView(tv);
+                        }
+                        ViewGroup parent = (ViewGroup) tableRow.getParent();
+                        if (parent != null) {
+                            parent.removeAllViews();
+                        }
+                        tableLayout.addView(tableRow, new TableLayout.LayoutParams(MP, WC, 1));
+                    } else if (data1.getString("valorgroup").equals("group")) {
+                        selectcheck=new JSONArray();
+                        for (int i = 0; i < valarray.length()+1; i++) {
+                            TableRow tableRow = new TableRow(AddInfo.this);
+                            JSONObject val = valarray.getJSONObject(i);
+                            TableRow.LayoutParams lp1 = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+                            {
+                                TextView tv = new TextView(AddInfo.this);
+                                ViewGroup parent = (ViewGroup) tv.getParent();
+                                if (parent != null) {
+                                    parent.removeAllViews();
+                                }
+                                if(data1.getString("status").equals("checkedwillbesaved")){
+                                    checkBox[i] = new CheckBox(AddInfo.this);
+                                    final int kk=i;
+                                    JSONObject ob=new JSONObject();
+                                    ob.put("checkboxid",Integer.valueOf(val.getString("valnumber")));
+                                    ob.put("cbvalnumber",val.getString("valnumber"));
+                                    checkBox[i].setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                        public void onCheckedChanged(CompoundButton arg0, boolean ischecked) {
+                                            if(ischecked){
+                                                try {
+                                                    selectcheck.getJSONObject(kk).put("ischecked",true);
+                                                    Log.d("Json",selectcheck.toString());
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }else{
+                                                try {
+                                                    selectcheck.getJSONObject(kk).put("ischecked",false);
+                                                    Log.d("Json",selectcheck.toString());
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        }
+                                    });
+                                    ob.put("ischecked",false);
+                                    selectcheck.put(i,ob);
+                                    checkBox[i].setGravity(Gravity.CENTER);
+                                    lp1.setMargins(5, 5, 5, 5);
+                                    checkBox[i].setLayoutParams(lp1);
+                                    tableRow.addView(checkBox[i]);
+                                }else if(data1.getString("status").equals("willbesaved")) {
 
+                                    tv = new TextView(AddInfo.this);
+                                    tv.setText(++i + "");
+                                    tv.setBackgroundResource(R.drawable.table_textview);
+                                    tv.setGravity(Gravity.CENTER);
+                                    lp1.setMargins(5, 5, 5, 5);
+                                    tv.setLayoutParams(lp1);
+                                    tableRow.addView(tv);
+                                }
+
+                            }
+                            for (int j = 1; j < colume_head.length; j++) {
+                                TextView tv = new TextView(AddInfo.this);
+                                ViewGroup parent = (ViewGroup) tv.getParent();
+                                if (parent != null) {
+                                    parent.removeAllViews();
+                                }
+                                tv = new TextView(AddInfo.this);
+                                tv.setText(val.getString(colume_s[j]));
+                                tv.setBackgroundResource(R.drawable.table_textview);
+                                tv.setGravity(Gravity.CENTER);
+                                lp1.setMargins(5, 5, 5, 5);
+                                tv.setLayoutParams(lp1);
+                                tableRow.addView(tv);
+                            }
+                            ViewGroup parent = (ViewGroup) tableRow.getParent();
+                            if (parent != null) {
+                                parent.removeAllViews();
+                            }
+                            tableLayout.addView(tableRow, new TableLayout.LayoutParams(MP, WC, 1));
+                        }
                     }
-                    TextView valinfo=(TextView)findViewById(R.id.valinfo);
-                    valinfo.setText(str);
                     Log.d("result", str);
-
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -217,6 +389,13 @@ public class AddInfo extends Activity {
                             tv.setText("存储位置编号:");
                             tv.setGravity(Gravity.CENTER);
                             TextView tv1 = (TextView) findViewById(R.id.addstoragevalnumber);
+                            tv1.setText(number); //or do sth
+                            tv1.setGravity(Gravity.CENTER);
+                        }else if(photos[index].equals("附加存储位置编号")&&number.length()<6){
+                            TextView tv = (TextView) findViewById(R.id.exlocationnum);
+                            tv.setText("附加存储位置编号:");
+                            tv.setGravity(Gravity.CENTER);
+                            TextView tv1 = (TextView) findViewById(R.id.addexlocationnum);
                             tv1.setText(number); //or do sth
                             tv1.setGravity(Gravity.CENTER);
                         }

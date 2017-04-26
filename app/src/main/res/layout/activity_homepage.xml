@@ -86,7 +86,7 @@
                 android:layout_height="match_parent"
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
-                android:text="已检入库"
+                android:text="出库"
                 android:layout_margin="@dimen/height_3_80">
             </Button>
             <Button
@@ -94,7 +94,7 @@
                 android:layout_height="match_parent"
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
-                android:text="出库"
+                android:text="搜索"
                 android:layout_margin="@dimen/height_3_80">
             </Button>
         </LinearLayout>
