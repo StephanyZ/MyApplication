@@ -87,7 +87,8 @@
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
                 android:text="出库"
-                android:layout_margin="@dimen/height_3_80">
+                android:layout_margin="@dimen/height_3_80"
+                android:background="@drawable/btn_selector">
             </Button>
             <Button
                 android:id="@+id/searchbutton"

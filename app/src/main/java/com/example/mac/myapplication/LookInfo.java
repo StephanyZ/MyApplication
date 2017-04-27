@@ -21,6 +21,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class LookInfo extends Activity {
+    String  SHOW_URL= "http://192.168.1.102:8080/valmanage/jsp/showsaveactioninfo.jsp";
+    //String  SHOW_URL= "http://172.20.10.3:8080/valmanage/jsp/showsaveactioninfo.jsp";
     private final int WC = ViewGroup.LayoutParams.WRAP_CONTENT;
     private final int MP = ViewGroup.LayoutParams.MATCH_PARENT;
     private String response=null;
@@ -56,7 +58,7 @@ public class LookInfo extends Activity {
                             }
                             tv = new TextView(LookInfo.this);
                             tv.setText(colume_head[k]);
-                            tv.setBackgroundResource(R.drawable.table_textview);
+                            tv.setBackgroundResource(R.drawable.table_head);
                             tv.setGravity(Gravity.CENTER);
                             lp1.setMargins(5,5,5,5);
                             tv.setLayoutParams(lp1);
@@ -75,8 +77,24 @@ public class LookInfo extends Activity {
                                 parent.removeAllViews();
                             }
                             tv = new TextView(LookInfo.this);
-                            tv.setText(mydata.getString(colume_s[j]));
-                            tv.setBackgroundResource(R.drawable.table_textview);
+                            if(colume_s[j].equals("optime")){
+                                String date=mydata.getString(colume_s[j]);
+                                date=date.substring(0,10);
+                                tv.setText(date);
+                                tv.setBackgroundResource(R.drawable.table_textview);
+                            }else if(colume_s[j].equals("opaction")){
+                                if(mydata.getString(colume_s[j]).equals("T")){
+                                    tv.setText("出库");
+                                    tv.setBackgroundResource(R.drawable.textview_send);
+                                }else if(mydata.getString(colume_s[j]).equals("S")){
+                                    tv.setText("入库");
+                                    tv.setBackgroundResource(R.drawable.textview_save);
+                                }
+                            }else{
+                                tv.setText(mydata.getString(colume_s[j]));
+                                tv.setBackgroundResource(R.drawable.table_textview);
+                            }
+
                             tv.setGravity(Gravity.CENTER);
                             lp1.setMargins(5,5,5,5);
                             tv.setLayoutParams(lp1);
@@ -99,7 +117,7 @@ public class LookInfo extends Activity {
 
     Runnable newTread = new Runnable(){
         public void run(){
-            String  SHOW_URL= "http://172.20.10.3:8080/valmanage/jsp/showsaveactioninfo.jsp";
+
             response=PostUtils.getDataByGet(SHOW_URL,null,"utf8");
             if(response!=null){
                 Flag=1;

@@ -31,7 +31,8 @@
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:text="开始扫描"
-       android:layout_margin="@dimen/height_4_80"/>
+       android:layout_margin="@dimen/height_4_80"
+       android:background="@drawable/btn_selector"/>
 
    <LinearLayout
        android:layout_width="match_parent"
@@ -117,6 +118,7 @@
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:text="开始预存"
-       android:layout_margin="@dimen/height_4_80"/>
+       android:layout_margin="@dimen/height_4_80"
+       android:background="@drawable/btn_selector"/>
 </LinearLayout>
 

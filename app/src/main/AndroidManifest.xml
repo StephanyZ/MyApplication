@@ -20,7 +20,8 @@
         </activity>
         <activity android:name=".Homepage" />
         <activity android:name=".LookInfo" />
-        <activity android:name=".AddInfo"></activity>
+        <activity android:name=".AddInfo" />
+        <activity android:name=".OutInfo"></activity>
     </application>
 
 </manifest>

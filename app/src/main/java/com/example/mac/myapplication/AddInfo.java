@@ -34,8 +34,10 @@ import java.util.Map;
 
 
 public class AddInfo extends Activity {
-    String ADDTOPRE_URL="http://172.20.10.3:8080/valmanage/jsp/androidpreparetosave.jsp";
-    String GETVALINFO_URL="http://172.20.10.3:8080/valmanage/jsp/show.jsp";
+    String ADDTOPRE_URL="http://192.168.1.102:8080/valmanage/jsp/androidpreparetosave.jsp";
+    String GETVALINFO_URL="http://192.168.1.102:8080/valmanage/jsp/show.jsp";
+    //String ADDTOPRE_URL="http://172.20.10.3:8080/valmanage/jsp/androidpreparetosave.jsp";
+    //String GETVALINFO_URL="http://172.20.10.3:8080/valmanage/jsp/show.jsp";
     private final int WC = ViewGroup.LayoutParams.WRAP_CONTENT;
     private final int MP = ViewGroup.LayoutParams.MATCH_PARENT;
     Spinner photo;
@@ -113,6 +115,8 @@ public class AddInfo extends Activity {
             response=PostUtils.getDataByPost(ADDTOPRE_URL,addmessage,"utf8");
             if(response.equals("sucess")) {
                 result="添加成功";
+                handler.sendEmptyMessage(0x123);
+                handler2.sendEmptyMessage(0x123);
             }else{
                 String[] re = response.split("&");
                 Log.d("re0",re[0]);
@@ -120,8 +124,9 @@ public class AddInfo extends Activity {
                 if(re[0].equals("failed")){
                     result="添加失败！"+re[1];
                 }
+                handler.sendEmptyMessage(0x123);
             }
-            handler.sendEmptyMessage(0x123);
+
         }
     };
     Runnable newTread1 = new Runnable() {
@@ -260,7 +265,6 @@ public class AddInfo extends Activity {
                                     checkBox[i] = new CheckBox(AddInfo.this);
                                     final int kk=i;
                                     JSONObject ob=new JSONObject();
-                                    ob.put("checkboxid",Integer.valueOf(val.getString("valnumber")));
                                     ob.put("cbvalnumber",val.getString("valnumber"));
                                     checkBox[i].setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                                         public void onCheckedChanged(CompoundButton arg0, boolean ischecked) {
@@ -333,6 +337,17 @@ public class AddInfo extends Activity {
         public void handleMessage(android.os.Message msg) {
             Toast.makeText(AddInfo.this,result,Toast.LENGTH_SHORT).show();
             sleep=1;
+            Looper.loop();
+        };
+    };
+
+    private Handler handler2 = new Handler() {
+        public void handleMessage(android.os.Message msg) {
+            Intent it=new Intent().setClass(AddInfo.this,AddInfo.class);
+            Bundle bundle=new Bundle();
+            bundle.putString("account", Account);
+            it.putExtras(bundle);
+            startActivity(it);
             Looper.loop();
         };
     };
