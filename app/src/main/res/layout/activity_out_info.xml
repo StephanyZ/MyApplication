@@ -45,5 +45,6 @@
         android:text="确认出库"
         android:layout_alignParentBottom="true"
         android:layout_margin="@dimen/height_3_80"
+        android:background="@drawable/btn_selector"
         />
 </LinearLayout>

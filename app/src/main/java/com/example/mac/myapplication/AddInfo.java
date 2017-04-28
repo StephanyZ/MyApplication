@@ -183,6 +183,7 @@ public class AddInfo extends Activity {
                     }
 
                     JSONArray valarray = new JSONArray(data1.getString("values"));
+
                     if (data1.getString("valorgroup").equals("val")) {
                         selectcheck=new JSONArray();
                         TableRow tableRow = new TableRow(AddInfo.this);
@@ -230,7 +231,7 @@ public class AddInfo extends Activity {
                             }
 
                         }
-                        for (int j = 1; j < colume_head.length; j++) {
+                        for (int j = 0; j < colume_head.length; j++) {
                             TextView tv = new TextView(AddInfo.this);
                             ViewGroup parent = (ViewGroup) tv.getParent();
                             if (parent != null) {
@@ -294,7 +295,8 @@ public class AddInfo extends Activity {
                                 }else if(data1.getString("status").equals("willbesaved")) {
 
                                     tv = new TextView(AddInfo.this);
-                                    tv.setText(++i + "");
+                                    int kk=i+1;
+                                    tv.setText(kk + "");
                                     tv.setBackgroundResource(R.drawable.table_textview);
                                     tv.setGravity(Gravity.CENTER);
                                     lp1.setMargins(5, 5, 5, 5);
@@ -303,6 +305,7 @@ public class AddInfo extends Activity {
                                 }
 
                             }
+
                             for (int j = 1; j < colume_head.length; j++) {
                                 TextView tv = new TextView(AddInfo.this);
                                 ViewGroup parent = (ViewGroup) tv.getParent();
@@ -317,6 +320,7 @@ public class AddInfo extends Activity {
                                 tv.setLayoutParams(lp1);
                                 tableRow.addView(tv);
                             }
+
                             ViewGroup parent = (ViewGroup) tableRow.getParent();
                             if (parent != null) {
                                 parent.removeAllViews();
