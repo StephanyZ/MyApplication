@@ -34,8 +34,8 @@ import java.util.Map;
 
 
 public class AddInfo extends Activity {
-    String ADDTOPRE_URL="http://192.168.1.102:8080/valmanage/jsp/androidpreparetosave.jsp";
-    String GETVALINFO_URL="http://192.168.1.102:8080/valmanage/jsp/show.jsp";
+    String ADDTOPRE_URL="http://192.168.1.100:8080/valmanage/jsp/androidpreparetosave.jsp";
+    String GETVALINFO_URL="http://192.168.1.100:8080/valmanage/jsp/show.jsp";
     //String ADDTOPRE_URL="http://172.20.10.3:8080/valmanage/jsp/androidpreparetosave.jsp";
     //String GETVALINFO_URL="http://172.20.10.3:8080/valmanage/jsp/show.jsp";
     private final int WC = ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -105,11 +105,11 @@ public class AddInfo extends Activity {
             addmessage.put("storagelocationnum",storagenumber);
             addmessage.put("opaction",opaction);
             addmessage.put("manindex",Account);
+            addmessage.put("checkedinfo",selectcheck.toString());
             if(selectcheck.length()==0) {
                 addmessage.put("option", "nochecksave");
             }else if(selectcheck.length()>0){
                 addmessage.put("option", "ischeckedsave");
-                addmessage.put("checkedinfo",selectcheck.toString());
                 addmessage.put("exlocationnum",exlocationnum);
             }
             response=PostUtils.getDataByPost(ADDTOPRE_URL,addmessage,"utf8");

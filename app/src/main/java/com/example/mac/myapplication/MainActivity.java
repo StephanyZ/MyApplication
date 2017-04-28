@@ -18,7 +18,7 @@ import java.util.Map;
 
 public class MainActivity extends Activity{
     String msg = "Android : ";
-    public static String  LOGIN_URL= "http://192.168.1.102:8080/valmanage/jsp/androidlogin.jsp";
+    public static String  LOGIN_URL= "http://192.168.1.100:8080/valmanage/jsp/androidlogin.jsp";
     //public static String  LOGIN_URL= "http://172.20.10.3:8080/valmanage/jsp/androidlogin.jsp";
     private String response=null;
     private String result=null;
@@ -48,7 +48,6 @@ public class MainActivity extends Activity{
             usermessage.put("password",passwd);
 
             response=PostUtils.getDataByPost(LOGIN_URL,usermessage,"utf8");
-
             if(response.equals("sucess")){
                 result="登陆成功";
                 handler.sendEmptyMessage(0x123);

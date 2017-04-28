@@ -21,7 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class LookInfo extends Activity {
-    String  SHOW_URL= "http://192.168.1.102:8080/valmanage/jsp/showsaveactioninfo.jsp";
+    String  SHOW_URL= "http://192.168.1.100:8080/valmanage/jsp/showsaveactioninfo.jsp";
     //String  SHOW_URL= "http://172.20.10.3:8080/valmanage/jsp/showsaveactioninfo.jsp";
     private final int WC = ViewGroup.LayoutParams.WRAP_CONTENT;
     private final int MP = ViewGroup.LayoutParams.MATCH_PARENT;
