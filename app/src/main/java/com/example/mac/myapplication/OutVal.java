@@ -97,6 +97,21 @@ public class OutVal extends Activity {
             addmessage.put("manindex",Account);
             addmessage.put("mark",mark);
             response = PostUtils.getDataByPost(VALOUT_URL, addmessage, "utf8");
+            Log.d("result", response);
+            if (response.equals("sucess")) {
+                result="预出库成功";
+                Log.d("result", response);
+                handler.sendEmptyMessage(0x123);
+                handler2.sendEmptyMessage(0x123);//Flag=1;
+            } else {
+                String[] re = response.split("&");
+                Log.d("re0",re[0]);
+                Log.d("re1",re[1]);
+                if(re[0].equals("failed")){
+                    result="添加失败！"+re[1];
+                }
+                handler.sendEmptyMessage(0x123);
+            }
         }
     };
     Runnable newTread1 = new Runnable() {
@@ -117,9 +132,7 @@ public class OutVal extends Activity {
     private Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             Toast.makeText(OutVal.this, result, Toast.LENGTH_SHORT).show();
-        }
-
-        ;
+        };
     };
     private Handler handler1 = new Handler() {
 
@@ -227,6 +240,16 @@ public class OutVal extends Activity {
         };
     };
 
+    private Handler handler2 = new Handler() {
+        public void handleMessage(android.os.Message msg) {
+            Intent it=new Intent().setClass(OutVal.this,OutVal.class);
+            Bundle bundle=new Bundle();
+            bundle.putString("account", Account);
+            it.putExtras(bundle);
+            startActivity(it);
+            Looper.loop();
+        };
+    };
     private void startCaptureActivityForResult() {
         Intent intent = new Intent(this, CaptureActivity.class);
         Bundle bundle = new Bundle();
