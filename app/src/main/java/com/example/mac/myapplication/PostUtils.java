@@ -25,7 +25,7 @@ import static android.content.ContentValues.TAG;
  */
 
 public class PostUtils {
-
+    public static String localhost="172.20.10.3";
     public static String getDataByGet(String url,Map<String,String>params,String charset) {
         if (url == null) {
             return null;

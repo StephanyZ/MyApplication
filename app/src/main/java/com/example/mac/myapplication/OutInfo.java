@@ -28,9 +28,11 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.example.mac.myapplication.PostUtils.localhost;
+
 public class OutInfo extends Activity {
-    String ADDTOPRE_URL="http://192.168.1.100:8080/valmanage/jsp/androidpreparetosave.jsp";
-    String SHOW_URL = "http://192.168.1.100:8080/valmanage/jsp/getlocationsavedinfo.jsp";
+    String ADDTOPRE_URL="http://"+localhost+":8080/valmanage/jsp/androidpreparetosave.jsp";
+    String SHOW_URL = "http://"+localhost+":8080/valmanage/jsp/getlocationsavedinfo.jsp";
     //String  SHOW_URL= "http://172.20.10.3:8080/valmanage/jsp/showsaveactioninfo.jsp";
     private final int WC = ViewGroup.LayoutParams.WRAP_CONTENT;
     private final int MP = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -204,7 +206,7 @@ public class OutInfo extends Activity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Looper.loop();
+            //Looper.loop();
         };
     };
     private Handler handler = new Handler() {

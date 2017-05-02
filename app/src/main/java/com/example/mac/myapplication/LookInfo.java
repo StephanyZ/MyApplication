@@ -20,8 +20,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static com.example.mac.myapplication.PostUtils.localhost;
+
 public class LookInfo extends Activity {
-    String  SHOW_URL= "http://192.168.1.100:8080/valmanage/jsp/showsaveactioninfo.jsp";
+    String  SHOW_URL= "http://"+localhost+":8080/valmanage/jsp/showsaveactioninfo.jsp";
     //String  SHOW_URL= "http://172.20.10.3:8080/valmanage/jsp/showsaveactioninfo.jsp";
     private final int WC = ViewGroup.LayoutParams.WRAP_CONTENT;
     private final int MP = ViewGroup.LayoutParams.MATCH_PARENT;

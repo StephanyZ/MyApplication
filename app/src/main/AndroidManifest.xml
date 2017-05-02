@@ -21,7 +21,8 @@
         <activity android:name=".Homepage" />
         <activity android:name=".LookInfo" />
         <activity android:name=".AddInfo" />
-        <activity android:name=".OutInfo"></activity>
+        <activity android:name=".OutInfo" />
+        <activity android:name=".OutVal"></activity>
     </application>
 
 </manifest>

@@ -15,10 +15,11 @@ import android.widget.Toast;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.example.mac.myapplication.PostUtils.localhost;
 
 public class MainActivity extends Activity{
     String msg = "Android : ";
-    public static String  LOGIN_URL= "http://192.168.1.100:8080/valmanage/jsp/androidlogin.jsp";
+    public static String  LOGIN_URL= "http://"+localhost+":8080/valmanage/jsp/androidlogin.jsp";
     //public static String  LOGIN_URL= "http://172.20.10.3:8080/valmanage/jsp/androidlogin.jsp";
     private String response=null;
     private String result=null;

@@ -61,7 +61,11 @@ public class Homepage extends Activity implements View.OnClickListener{
 
         }
         if(v.getId()==R.id.searchbutton){
-
+            Intent it=new Intent().setClass(Homepage.this,OutVal.class);
+            Bundle bundle=new Bundle();
+            bundle.putString("account", Account);
+            it.putExtras(bundle);
+            startActivity(it);
         }
     }
 

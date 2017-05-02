@@ -32,10 +32,12 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.example.mac.myapplication.PostUtils.localhost;
+
 
 public class AddInfo extends Activity {
-    String ADDTOPRE_URL="http://192.168.1.100:8080/valmanage/jsp/androidpreparetosave.jsp";
-    String GETVALINFO_URL="http://192.168.1.100:8080/valmanage/jsp/show.jsp";
+    String ADDTOPRE_URL="http://"+localhost+":8080/valmanage/jsp/androidpreparetosave.jsp";
+    String GETVALINFO_URL="http://"+localhost+":8080/valmanage/jsp/show.jsp";
     //String ADDTOPRE_URL="http://172.20.10.3:8080/valmanage/jsp/androidpreparetosave.jsp";
     //String GETVALINFO_URL="http://172.20.10.3:8080/valmanage/jsp/show.jsp";
     private final int WC = ViewGroup.LayoutParams.WRAP_CONTENT;
