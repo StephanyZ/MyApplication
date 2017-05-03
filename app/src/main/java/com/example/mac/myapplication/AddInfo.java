@@ -199,6 +199,8 @@ public class AddInfo extends Activity {
                             }
                             if(data1.getString("status").equals("checkedwillbesaved")){
                                 CheckBox checkBoxval = new CheckBox(AddInfo.this);
+                                JSONObject ob=new JSONObject();
+                                ob.put("cbvalnumber",val.getString("valnumber"));
                                 checkBoxval.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                                     public void onCheckedChanged(CompoundButton arg0, boolean ischecked) {
                                         if(ischecked){
@@ -218,6 +220,8 @@ public class AddInfo extends Activity {
                                         }
                                     }
                                 });
+                                ob.put("ischecked",false);
+                                selectcheck.put(0,ob);
                                 checkBoxval.setGravity(Gravity.CENTER);
                                 lp1.setMargins(5, 5, 5, 5);
                                 checkBoxval.setLayoutParams(lp1);
