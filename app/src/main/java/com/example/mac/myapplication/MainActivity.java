@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.example.mac.myapplication.PostUtils.localhost;
-
 public class MainActivity extends Activity{
     String msg = "Android : ";
     public static String  LOGIN_URL= "http://"+localhost+":8080/valmanage/jsp/androidlogin.jsp";
@@ -36,18 +35,15 @@ public class MainActivity extends Activity{
             }
         });
     }
-
-    Runnable newTread = new Runnable() {
+        Runnable newTread = new Runnable() {
         public void run() {
             EditText user = (EditText)findViewById(R.id.useraccount);
             String userac=user.getText().toString().trim();
             EditText password = (EditText) findViewById(R.id.password);
             String passwd=password.getText().toString().trim();
-
             Map<String,String> usermessage=new HashMap<String,String>();
             usermessage.put("useraccount",userac);
             usermessage.put("password",passwd);
-
             response=PostUtils.getDataByPost(LOGIN_URL,usermessage,"utf8");
             if(response.equals("sucess")){
                 result="登陆成功";
@@ -63,14 +59,10 @@ public class MainActivity extends Activity{
                 handler.sendEmptyMessage(0x123);
             }
         }
-
-    };
-
-
+        };
     private Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             Toast.makeText(MainActivity.this,result,Toast.LENGTH_SHORT).show();
         };
     };
-
 }

@@ -143,7 +143,7 @@ public class OutVal extends Activity {
                 tableLayout.setStretchAllColumns(true);
                 final JSONArray valoutinfo = new JSONArray(response);
                 String colume_head[] = {"全选", "编号", "委托单号", "存储位置", "状态"};
-                String colume_s[] = {"index", "valnumber", "acceptno", "location", "valstatus"};
+                String colume_s[] = {"index", "valnumber", "acceptno", "location", "isqualify"};
                 {
                     TableRow tableRow = new TableRow(OutVal.this);
                     TableRow.LayoutParams lp1 = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
@@ -224,8 +224,21 @@ public class OutVal extends Activity {
                             parent.removeAllViews();
                         }
                         tv = new TextView(OutVal.this);
-                        tv.setText(val.getString(colume_s[j]));
-                        tv.setBackgroundResource(R.drawable.table_textview);
+                        if(j==4){
+                            if(val.getString(colume_s[j]).equals("no")){
+                                tv.setText("不合格");
+                                tv.setBackgroundResource(R.drawable.textview_send);
+                            }else if(val.getString(colume_s[j]).equals("yes")){
+                                tv.setText("合格");
+                                tv.setBackgroundResource(R.drawable.textview_save);
+                            }else{
+                                tv.setText("未检");
+                                tv.setBackgroundResource(R.drawable.textview_save);
+                            }
+                        }else {
+                            tv.setText(val.getString(colume_s[j]));
+                            tv.setBackgroundResource(R.drawable.table_textview);
+                        }
                         tv.setGravity(Gravity.CENTER);
                         lp1.setMargins(5, 5, 5, 5);
                         tv.setLayoutParams(lp1);

@@ -136,7 +136,7 @@ public class AddInfo extends Activity {
             TextView addvalnumber=(TextView)findViewById(R.id.addvalnumber);
             String valnumber=addvalnumber.getText().toString().trim();
             Map<String,String> addmessage=new HashMap<String,String>();
-            addmessage.put("valorgroupnumber",valnumber);
+            addmessage.put("acceptno",valnumber);
             addmessage.put("option","androidshowvalinfo");
             response=PostUtils.getDataByPost(GETVALINFO_URL,addmessage,"utf8");
             if(response!=null) {
@@ -183,9 +183,7 @@ public class AddInfo extends Activity {
                         }
                         tableLayout.addView(tableRow, new TableLayout.LayoutParams(MP, WC, 1));
                     }
-
                     JSONArray valarray = new JSONArray(data1.getString("values"));
-
                     if (data1.getString("valorgroup").equals("val")) {
                         selectcheck=new JSONArray();
                         TableRow tableRow = new TableRow(AddInfo.this);
@@ -237,7 +235,7 @@ public class AddInfo extends Activity {
                             }
 
                         }
-                        for (int j = 0; j < colume_head.length; j++) {
+                        for (int j = 1; j < colume_head.length; j++) {
                             TextView tv = new TextView(AddInfo.this);
                             ViewGroup parent = (ViewGroup) tv.getParent();
                             if (parent != null) {
@@ -400,9 +398,9 @@ public class AddInfo extends Activity {
                         photos=getResources().getStringArray(R.array.photoitem);
                         index=photo.getSelectedItemPosition();
                         String number=data.getStringExtra(CaptureActivity.EXTRA_SCAN_RESULT);
-                        if(photos[index].equals("安全阀编号")&&number.length()>6){
+                        if(photos[index].equals("委托单编号")&&number.length()>6){
                             TextView tv = (TextView) findViewById(R.id.valnumber);
-                            tv.setText("安全阀编号:");
+                            tv.setText("委托单编号:");
                             tv.setGravity(Gravity.CENTER);
                             TextView tv1 = (TextView) findViewById(R.id.addvalnumber);
                             tv1.setText(number); //or do sth
@@ -422,20 +420,12 @@ public class AddInfo extends Activity {
                             tv.setGravity(Gravity.CENTER);
                             TextView tv1 = (TextView) findViewById(R.id.addexlocationnum);
                             tv1.setText(number); //or do sth
-                            tv1.setGravity(Gravity.CENTER);
-                        }
+                            tv1.setGravity(Gravity.CENTER);}
                         break;
                     case RESULT_CANCELED:
-                        if (data != null) {
-                            // for some reason camera is not working correctly
-                           // tvResult.setText(data.getStringExtra(CaptureActivity.EXTRA_SCAN_RESULT));
-                        }
-                        break;
-                }
+                        if (data != null) {}
+                        break;}
                 break;
         }
     }
-
-
-
 }

@@ -19,6 +19,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:orientation="horizontal"
         android:layout_marginTop="@dimen/height_2_80"
         android:layout_marginRight="@dimen/height_8_80"
@@ -43,60 +44,67 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_gravity="center"
         android:orientation="vertical"
-        android:layout_weight="10"
-
-        android:layout_marginLeft="@dimen/height_3_80"
-        android:layout_marginRight="@dimen/height_3_80">
+        android:layout_weight="45"
+        android:layout_margin="@dimen/height_10_80">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="horizontal"
+            android:padding="@dimen/height_3_80"
             >
             <Button
                 android:id="@+id/lookbutton"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/height_5_80"
                 android:layout_weight="1"
+                android:background="@drawable/btn_selector"
                 android:text="浏览"
-                android:layout_margin="@dimen/height_3_80"
-                android:background="@drawable/btn_selector">
-            </Button>
+                android:textSize="@dimen/height_13_80"
+                ></Button>
+
             <Button
                 android:id="@+id/addbutton"
                 android:layout_height="match_parent"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="进库"
-                android:layout_margin="@dimen/height_3_80"
-                android:background="@drawable/btn_selector">
+                android:textSize="@dimen/height_13_80"
+                android:layout_margin="@dimen/height_5_80"
+                android:background="@drawable/btn_selector_red">
             </Button>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="@dimen/height_3_80">
             <Button
                 android:id="@+id/outbutton"
                 android:layout_height="match_parent"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_weight="1"
-                android:text="出库"
-                android:layout_margin="@dimen/height_3_80"
-                android:background="@drawable/btn_selector">
+                android:text="未检出库"
+                android:textSize="@dimen/height_10_80"
+                android:layout_margin="@dimen/height_5_80"
+                android:background="@drawable/btn_selector_red">
             </Button>
             <Button
                 android:id="@+id/searchbutton"
                 android:layout_height="match_parent"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_weight="1"
-                android:text="搜索"
-                android:layout_margin="@dimen/height_3_80">
+                android:text="检毕出库"
+                android:textSize="@dimen/height_10_80"
+                android:background="@drawable/btn_selector"
+                android:layout_margin="@dimen/height_5_80">
             </Button>
         </LinearLayout>
 

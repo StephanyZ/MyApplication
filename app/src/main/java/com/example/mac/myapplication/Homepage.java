@@ -3,6 +3,7 @@ package com.example.mac.myapplication;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,7 +21,8 @@ import org.json.JSONObject;
 import static java.security.AccessController.getContext;
 
 public class Homepage extends Activity implements View.OnClickListener{
-    Button lookbtn,addbtn,outbtn,searchbtn;
+    Button addbtn,outbtn,searchbtn;
+    Button lookbtn;
     String Account=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

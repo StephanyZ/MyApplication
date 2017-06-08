@@ -47,13 +47,13 @@
              android:id="@+id/valnumber"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
-             android:textSize="@dimen/height_15_80"
+             android:textSize="@dimen/height_10_80"
              android:layout_weight="1"/>
          <TextView
              android:id="@+id/addvalnumber"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
-             android:textSize="@dimen/height_15_80"
+             android:textSize="@dimen/height_10_80"
              android:layout_weight="1"/>
       </LinearLayout>
       <LinearLayout
@@ -63,8 +63,13 @@
              android:scrollbars="vertical"
              android:fadingEdge="vertical"
              android:layout_height="match_parent"
-             android:layout_width="wrap_content"
+             android:layout_width="match_parent"
              >
+            <ScrollView
+                android:scrollbars="horizontal"
+                android:fadingEdge="horizontal"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent">
             <TableLayout
                 android:id="@+id/valinfoshow"
                 android:layout_weight="10"
@@ -73,7 +78,9 @@
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent">
             </TableLayout>
+
          </ScrollView>
+      </ScrollView>
       </LinearLayout>
 
       <LinearLayout
@@ -101,13 +108,13 @@
              android:id="@+id/exlocationnum"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
-             android:textSize="@dimen/height_15_80"
+             android:textSize="@dimen/height_10_80"
              android:layout_weight="1"/>
          <TextView
              android:id="@+id/addexlocationnum"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
-             android:textSize="@dimen/height_15_80"
+             android:textSize="@dimen/height_10_80"
              android:layout_weight="1"/>
       </LinearLayout>
    </LinearLayout>

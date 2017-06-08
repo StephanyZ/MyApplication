@@ -86,6 +86,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Reset"
+            android:background="@drawable/btn_selector"
             />
         <Button
             android:id="@+id/loginbutton"
@@ -95,6 +96,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginLeft="80dp"
             android:layout_toEndOf="@+id/resetbutton"
+            android:background="@drawable/btn_selector"
             />
 
     </RelativeLayout>

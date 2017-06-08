@@ -25,7 +25,14 @@ import static android.content.ContentValues.TAG;
  */
 
 public class PostUtils {
-    public static String localhost="172.20.10.3";
+    /**
+     *  以get方式向服务端发送请求，并将服务端的响应结果以字符串方式返回。如果没有响应内容则返回空字符串
+     * @param url 请求的url地址
+     * @param params 请求参数
+     * @param charset url编码采用的码表
+     * @return
+     */
+    public static String localhost="192.168.1.106";
     public static String getDataByGet(String url,Map<String,String>params,String charset) {
         if (url == null) {
             return null;
@@ -38,9 +45,9 @@ public class PostUtils {
             } else {
                 StringBuilder sb = new StringBuilder(url + "?");
                 for (Map.Entry<String, String> me : params.entrySet()) {
-//                    解决请求参数中含有中文导致乱码问题
-                    sb.append(me.getKey()).append("=").append(URLEncoder.encode(me.getValue(), charset)).append("&")
-                    ;
+                    //解决请求参数中含有中文导致乱码问题
+                    sb.append(me.getKey()).append("=").append(URLEncoder.encode(
+                            me.getValue(), charset)).append("&");
                 }
                 sb.deleteCharAt(sb.length() - 1);
                 targetUrl = new URL(sb.toString());
@@ -68,17 +75,13 @@ public class PostUtils {
  * @param charset url编码采用的码表
  * @return
  */
-    public static String getDataByPost(String url,Map<String,String>params,String charset)
-    {
+    public static String getDataByPost(String url,Map<String,String>params,String charset) {
         if(url == null)
-        {
-            return null;
-        }
+        {return null;}
         url = url.trim();
         URL targetUrl = null;
         OutputStream out = null;
-        try
-        {
+        try{
             targetUrl = new URL(url);
             HttpURLConnection conn = (HttpURLConnection) targetUrl.openConnection();
             conn.setConnectTimeout(3000);
@@ -87,12 +90,11 @@ public class PostUtils {
             conn.setDoOutput(true);
 
             StringBuilder sb = new StringBuilder();
-            if(params!=null && !params.isEmpty())
-            {
-                for(Map.Entry<String,String> me : params.entrySet())
-                {
-//                    对请求数据中的中文进行编码
-                    sb.append(me.getKey()).append("=").append(URLEncoder.encode(me.getValue(),charset)).append("&");
+            if(params!=null && !params.isEmpty()) {
+                for(Map.Entry<String,String> me : params.entrySet()) {
+                    // 对请求数据中的中文进行编码
+                    sb.append(me.getKey()).append("=").append(URLEncoder.encode(
+                            me.getValue(),charset)).append("&");
                 }
                 sb.deleteCharAt(sb.length()-1);
             }
@@ -101,18 +103,15 @@ public class PostUtils {
             conn.setRequestProperty("Content-Length",String.valueOf(data.length));
             out = conn.getOutputStream();
             out.write(data);
-
             Log.i(TAG,"post:url----->"+targetUrl.toString());//打印log
 
             int responseCode = conn.getResponseCode();
             if(responseCode == HttpURLConnection.HTTP_OK)
             {
                 String ss=stream2String(conn.getInputStream(),charset);
-                //Log.i("response",ss);
                 return ss;
             }
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             Log.i(TAG,e.getMessage());
         }
         return null;
